@@ -58,14 +58,4 @@ class Market
       item.name
     end.sort
   end
-
-  def available_to_be_sold?(item, quantity)
-    if list_of_items.include?(item) == false
-      return false
-    elsif total_inventory[item][:quantity] < quantity
-      return false
-    elsif total_inventory[item][:quantity] >= quantity
-      return true
-    end
-  end
 end
