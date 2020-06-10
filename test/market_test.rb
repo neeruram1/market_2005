@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'mocha/minitest'
 require 'pry'
 require './lib/item'
 require './lib/vendor'
@@ -14,6 +15,7 @@ class MarketTest < Minitest::Test
     @item2 = Item.new({name: 'Tomato', price: "$0.50"})
     @item3 = Item.new({name: "Peach-Raspberry Nice Cream", price: "$5.30"})
     @item4 = Item.new({name: "Banana Nice Cream", price: "$4.25"})
+    @item5 = Item.new({name: 'Onion', price: '$0.25'})
 
     @vendor1 = Vendor.new("Rocky Mountain Fresh")
     @vendor1.stock(@item1, 35)
@@ -94,5 +96,12 @@ class MarketTest < Minitest::Test
     expected = ["Banana Nice Cream", "Peach", "Peach-Raspberry Nice Cream", "Tomato"]
 
     assert_equal expected, @market.sorted_item_list
+  end
+
+  def test_it_has_a_date
+    Date.stubs(:today).returns(Date.new(2020, 02, 24))
+    market1 = Market.new("Neeru's Market")
+
+    assert_equal "24/02/2020", market1.date
   end
 end
