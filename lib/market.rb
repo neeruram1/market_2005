@@ -22,4 +22,38 @@ class Market
       vendor.check_stock(item) > 0
     end
   end
+
+  def list_of_items
+    @vendors.flat_map do |vendor|
+      vendor.inventory.keys
+    end.uniq
+  end
+
+  def total_inventory
+    total = {}
+    list_of_items.each do |item|
+      total[item] = {quantity: 0, vendors: []}
+    end
+
+    @vendors.each do |vendor|
+      vendor.inventory.each do |item, quantity|
+        total[item][:quantity] += quantity
+        total[item][:vendors] = vendors_that_sell(item)
+      end
+    end
+    total
+  end
+
+  def overstocked_items
+    total_inventory.keep_if do |item, data|
+      data[:quantity] > 50 && data[:vendors].count > 1
+    end.keys
+  end
+
+  def sorted_item_list
+    list_of_items.map do |item|
+      item.name
+    end.sort
+  end
+
 end
